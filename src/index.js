@@ -4,7 +4,7 @@ let listObject = {
     {
     name: "Task №1",
     dateOfCreation: "02/07/2020",
-    status: "Completed",
+    status: "Active",
     text: "Visit a dentist",
     },
  
@@ -18,24 +18,42 @@ let listObject = {
     {
     name: "Task №3",
     dateOfCreation: "10/07/2020",
-    status: "Active",
+    status: "Completed",
     text: "Bake a cake",
     },
     ],
     
 }
 
-listObject.addTask = function() {
-    let newTask = {
-        name: "Task number",
-        dateOfCreation: "Current date",
-        status: "Active",
-        text: "Some text",
-        }
-    listObject.toDoList.push(newTask);
+findDublicate = function(text) {
+    let task = listObject.toDoList.find(function(item) {
+        return item.text === text;
+    });
+    if (task === undefined) {
+        return true;
+    } else {
+        return false;
+    };
+};
+
+
+listObject.addTask = function(text) {
+    if(findDublicate(text)) {
+        let newTask = {
+            name: "Task number",
+            dateOfCreation: "Current date",
+            status: "Active",
+            text: "",
+            }
+        newTask.name = "Task №" + Number(listObject.toDoList.length + 1);
+        newTask.text = text;
+        listObject.toDoList.push(newTask);
+    } else {
+        throw new Error("This task already exist");
+    };
 };
   
-listObject.addTask();
+listObject.addTask("Save the world");
 console.log(listObject);
 
 
@@ -49,23 +67,40 @@ listObject.deleteTask = function(text, confirmation) {
    }; 
 };
 
-console.log(listObject.deleteTask("Cut nose hair", true));
+console.log(listObject.deleteTask("Visit a dentist", true));
 console.log(listObject);
 
 
-listObject.findDublicate = function(text) {
-    let task = listObject.toDoList.find(function(item) {
+listObject.editTask = function(text, newText, confirmation) {
+    if (confirmation) {
+        let task = listObject.toDoList.find(function(item) {
         return item.text === text;
+        });
+        if(findDublicate(newText)) {
+            task.text = newText; 
+        } else {
+            throw new Error("This task already exist");
+        };
+    };  
+};
+ 
+console.log(listObject.editTask("Cut nose hair", "Cut nose hair and shave my legs", true));
+console.log(listObject);
+
+
+listObject.getInfo = function() {
+    let total = listObject.toDoList.length;
+    let completedList = listObject.toDoList.filter(function(item) {
+        return item.status === "Completed";
     });
-    if (task !== undefined) {
-        return true;
-    } else {
-        return false;
-    };
+    let completed = completedList.length;
+    return `Total: ${total}, completed: ${completed}`;
 };
 
-console.log(listObject.findDublicate("Cut nose hair"));
+console.log(listObject.getInfo());
 
+Object.seal(listObject);
 
-
-
+listObject.toDoList.forEach(function(item) {
+    Object.seal(item);
+});
