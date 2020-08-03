@@ -63,8 +63,11 @@ listObject.deleteTask = function(text, confirmation) {
        return item.text === text;
     });
     let i = listObject.toDoList.indexOf(task);
-    listObject.toDoList.splice(i, 1);  
-   }; 
+    if (i !== -1) {
+        listObject.toDoList.splice(i, 1);
+    };
+      
+    }; 
 };
 
 console.log(listObject.deleteTask("Visit a dentist", true));
