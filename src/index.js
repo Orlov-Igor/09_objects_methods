@@ -25,7 +25,7 @@ let listObject = {
     
 }
 
-findDublicate = function(text) {
+let findDublicate = function(text) {
     let task = listObject.toDoList.find(function(item) {
         return item.text === text;
     });
