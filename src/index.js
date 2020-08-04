@@ -102,8 +102,4 @@ listObject.getInfo = function() {
 
 console.log(listObject.getInfo());
 
-Object.seal(listObject);
-
-listObject.toDoList.forEach(function(item) {
-    Object.seal(item);
-});
+Object.freeze(listObject);
